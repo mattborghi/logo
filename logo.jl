@@ -1,7 +1,7 @@
 using Luxor
 using Colors
 
-function create_logo(name::String, text_logo::String, font_family::String; width::Int=1250, height::Int=800)
+function create_logo(text_logo::String, font_family::String; name::Union{String,Symbol} = :svg, width::Int=1250, height::Int=800)
 
     Drawing(width, height, name)
     
@@ -45,30 +45,33 @@ end
 file_name = "assets/output.svg"
 logo = "TEST"
 font_family = "MathJax_Script"
-create_logo(file_name, logo, font_family)
+create_logo(logo, font_family)
+create_logo(logo, font_family, name = file_name)
 
+create_logo("MB", "MathJax_Script")
+create_logo("MB", "MathJax_Script", name = "assets/mb.svg", height = 300, width = 800)
 
 # Create M and B in separate files
-files = ["M", "B", "A"]
+files = ["M", "B"]
 for letter in files
-    create_logo("assets/tmp/$(letter).png", letter, font_family, width=500, height=300)
+    create_logo("assets/tmp/$(letter).svg", letter, font_family, width=500, height=300)
 end
 
 # Join them with a separation
 function join_images(files)
-    Drawing(1000, 300, :png)
+    Drawing(1000, 300, :svg)
     origin()
-    image = readpng("assets/tmp/$(files[1]).png")
+    image = readsvg("assets/tmp/$(files[1]).svg")
     for (index, file) in enumerate(files[2:end])
         println("Current letter: ", file)
-        img = readpng("assets/tmp/$(file).png")
+        img = readsvg("assets/tmp/$(file).svg")
 
         w = img.width
         h = img.height
 
-        placeimage(image, -w / 2, -h / 2, .5)
+        placeimage(image, O)
         # setmode("saturate")
-        translate(300, 0)
+        # translate(300, 0)
     # placeimage(img, -w / 2, -h / 2, .5)
     end
     finish()
