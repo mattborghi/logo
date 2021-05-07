@@ -1,4 +1,6 @@
 # logo
 My brand logo used across sites
 
-![logo](assets/mb.svg)
+<p align="center">
+<img src="assets/mb.svg" width="50%">
+</p>
